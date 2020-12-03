@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:SkillsTask.Converters"
+             xmlns:viewModel="clr-namespace:SkillsTask.ViewModels"
+             xmlns:behaviors="clr-namespace:SkillsTask.Behaviors"
+             mc:Ignorable="d"
+             x:Class="SkillsTask.Views.SkillsDetailView">
+    <ContentPage.BindingContext>
+        <viewModel:SkillsViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!--<local:SelectedItemEventArgsToSelectedItemConverter x:Key="SelectedItemConverter" />-->
+            <local:LevelToColorConverter x:Key="levelToColor" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+
+        <StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Skill Name"
+                       FontSize="20"
+                       TextDecorations="Underline"></Label>
+
+                <Entry x:Name="myNameEntry"
+                       MaxLength="10"
+                       HorizontalOptions="FillAndExpand"
+                       FontSize="20"></Entry>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Proficiency Level"
+                       FontSize="20"></Label>
+                <Entry Keyboard="Numeric"
+                       BackgroundColor="White"
+                       MaxLength="3"
+                       HorizontalOptions="Fill"
+                       WidthRequest="40"
+                       x:Name="myLevelEntry"
+                       Text="{Binding Source={x:Reference slider},
+                              Path=Value, StringFormat='{0:F0}'}"
+                       FontSize="20"></Entry>
+                <Label Text="%"
+                       FontSize="20"></Label>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Proficiency Level Indicator"
+                       FontSize="20"></Label>
+                    <!--Color="{Binding Source={x:Reference myLevelEntry},Converter={StaticResource levelToColor}}"-->
+                <BoxView 
+                         WidthRequest="30"
+                         HeightRequest="30"
+                         CornerRadius="30"></BoxView>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Slider Minimum="0"
+                        Maximum="100"
+                        WidthRequest="200"
+                        Value="50"
+                        ThumbColor="Blue"
+                        x:Name="slider"
+                        MinimumTrackColor="Blue"></Slider>
+                <Entry Keyboard="Numeric"
+                       BackgroundColor="White"
+                       MaxLength="3"
+                       HorizontalOptions="Fill"
+                       WidthRequest="40"
+                       IsReadOnly="True"
+                       Text="{Binding Source={x:Reference slider},
+                              Path=Value, StringFormat='{0:F0}'}"
+                       FontSize="20"></Entry>
+                <Label Text="%"
+                       FontSize="20"></Label>
+            </StackLayout>
+            <StackLayout>
+                <Label Text="Skill Description"
+                       FontSize="20"></Label>
+                <Editor FontSize="20"
+                        BackgroundColor="White"
+                        MaxLength="1000"
+                        x:Name="myDescEntry"
+                        HeightRequest="100"></Editor>
+            </StackLayout>
+            <Button Text="Update"
+                    Command="{Binding UpdateCommand}"></Button>
+
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>

@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:SkillsTask.ViewModels"
+             xmlns:local="clr-namespace:SkillsTask.Converters"
+             xmlns:behaviors="clr-namespace:SkillsTask.Behaviors"
+             mc:Ignorable="d"
+             x:Class="SkillsTask.Views.SkillsListView">
+    <ContentPage.BindingContext>
+        <vm:SkillsViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:LevelToColorConverter x:Key="levelToColor" />
+            <local:SelectedItemEventArgsToSelectedItemConverter x:Key="SelectedItemConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+
+            <ListView ItemsSource="{Binding SkillsList}"
+                      VerticalOptions="FillAndExpand"
+                      SelectedItem="{Binding SelectedSkill, Mode=TwoWay}" ItemTapped="ListView_ItemTapped">
+                <ListView.Behaviors>
+                    <behaviors:ListViewSelectedItemBehavior Command="{Binding OutputNameCommand}"
+                                                            Converter="{StaticResource SelectedItemConverter}" BindingContext="{Binding SelectedItemText}"
+                                                             />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <BoxView Color="{Binding Level, Converter={StaticResource levelToColor}}"
+                                         Grid.Row="0"
+                                         Grid.Column="0"
+                                         WidthRequest="30"
+                                         HeightRequest="30"
+                                         CornerRadius="30" />
+
+                                <Label Text="{Binding Name}"
+                                       FontSize="20"
+                                       Grid.Row="0"
+                                       Grid.Column="1"></Label>
+                                <Label x:Name="entry1"
+                                       Text="{Binding Level, StringFormat='{0:F0}%'}"
+                                       FontSize="20"
+                                       Grid.Row="0"
+                                       Grid.Column="2"></Label>
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <RelativeLayout VerticalOptions="End"
+                            HorizontalOptions="Fill"
+                            HeightRequest="42"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}">
+                <Label HeightRequest="42"
+                       VerticalTextAlignment="Center"
+                       Text="Copyright © 2020. All rights reserved."
+                       HorizontalTextAlignment="Center"
+                       RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}" />
+            </RelativeLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
